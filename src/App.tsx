@@ -22,7 +22,11 @@ function App() {
 
   const list3 = [
     { name: "lPKRiU9u_Hc", playerVars: { start: 1062 } },
-    { name: "eA8DuVW3vPo" },
+    {
+      name: "eA8DuVW3vPo",
+      comment:
+        "przy tym lepiej sobie na początku usiąść na podwyższeniu (jakiejs kostce do jogi czy cos) ",
+    },
   ];
 
   return (
@@ -42,6 +46,7 @@ function App() {
       {list3.map((x) => (
         <div key={x.name}>
           <YouTube videoId={x.name} opts={{ playerVars: x?.playerVars }} />
+          {x.comment && <p>{x.comment}</p>}
         </div>
       ))}
     </div>

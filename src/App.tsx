@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import YouTube from "react-youtube";
+import firebase, { signInWithGoogle } from "./services/firebase";
 
 function App() {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      setUser(user);
+    });
+  }, []);
+
   const list = [
     { name: "tpczTeSkHz0" },
     { name: "2TOqw5wSfgE" },
@@ -31,24 +40,32 @@ function App() {
 
   return (
     <div className="App">
-      {list.map((x) => (
-        <div key={x.name}>
-          <YouTube videoId={x.name} opts={{ playerVars: x?.playerVars }} />
+      <button onClick={signInWithGoogle}>
+        <i className="fab fa-google"></i>Sign-in with Goolge
+      </button>
+      {user && (
+        <div>
+          <div>{JSON.stringify(user)}</div>
+          {list.map((x) => (
+            <div key={x.name}>
+              <YouTube videoId={x.name} opts={{ playerVars: x?.playerVars }} />
+            </div>
+          ))}
+          <hr />
+          {list2.map((x) => (
+            <div key={x.name}>
+              <YouTube videoId={x.name} opts={{ playerVars: x?.playerVars }} />
+            </div>
+          ))}
+          <hr />
+          {list3.map((x) => (
+            <div key={x.name}>
+              <YouTube videoId={x.name} opts={{ playerVars: x?.playerVars }} />
+              {x.comment && <p>{x.comment}</p>}
+            </div>
+          ))}
         </div>
-      ))}
-      <hr />
-      {list2.map((x) => (
-        <div key={x.name}>
-          <YouTube videoId={x.name} opts={{ playerVars: x?.playerVars }} />
-        </div>
-      ))}
-      <hr />
-      {list3.map((x) => (
-        <div key={x.name}>
-          <YouTube videoId={x.name} opts={{ playerVars: x?.playerVars }} />
-          {x.comment && <p>{x.comment}</p>}
-        </div>
-      ))}
+      )}
     </div>
   );
 }

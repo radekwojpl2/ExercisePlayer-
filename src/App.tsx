@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
+import { Fragment, useEffect, useState } from "react";
 import "./App.css";
-import YouTube from "react-youtube";
 import firebase, { signInWithGoogle } from "./services/firebase";
 import { Plan } from "./pages/plan/Plan";
+import { Hello } from "./pages/Hello";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState<any>(null);
@@ -14,13 +14,21 @@ function App() {
     });
   }, []);
 
+  if (!user) {
+    return <Hello />;
+  }
+
   return (
-    <div className="App">
-      <button onClick={signInWithGoogle}>
-        <i className="fab fa-google"></i>Sign-in with Goolge
-      </button>
-      {user && <Plan />}
-    </div>
+    <Router>
+      <Fragment>
+        <button onClick={signInWithGoogle}>
+          <i></i>Sign-in with Goolge
+        </button>
+        <Routes>
+          <Route path="/" element={<Plan />} />
+        </Routes>
+      </Fragment>
+    </Router>
   );
 }
 
